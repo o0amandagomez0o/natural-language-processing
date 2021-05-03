@@ -70,7 +70,7 @@ def loop_blog_articles(sites):
 def convert_to_df():
     """
     This function takes list of dictionaries created by `loop_blog_articles`
-    returns converted list to df.
+    returns converted list to df
     """
     all_blog_posts = loop_blog_articles(sites)
     df = pd.DataFrame(all_blog_posts)
