@@ -75,3 +75,79 @@ def convert_to_df():
     all_blog_posts = loop_blog_articles(sites)
     df = pd.DataFrame(all_blog_posts)
     return df
+
+
+
+
+
+def get_article(article, category):
+    """
+    This function takes in an article and category
+    -IDs it's Title
+    - Body of content
+    creates an empty dictionary to house this information
+    returns the dictionary
+    """
+    
+    title = article.select("[itemprop='headline']")[0].text
+    
+    content = article.select("[itemprop='articleBody']")[0].text
+    
+    output = {}
+    output["title"] = title
+    output["content"] = content
+    output["category"] = category
+    
+    return output
+
+
+
+
+
+def get_articles(category):
+    """
+    This function takes in a str (must be available category in website)
+    returns a list of dictionaries that represents a sgl inshorts article
+    """
+    
+    base = "https://inshorts.com/en/read/"
+    url = base + category
+    
+    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
+    response = requests.get(url, headers=headers)
+    soup = bs4.BeautifulSoup(response.text)
+    
+    articles = soup.select('.news-card')
+    
+    output = []
+    for article in articles:
+        output.append(get_article(article, category))
+        
+    return output
+        
+    
+    
+    
+    
+    
+def get_all_news_articles(categories):
+    """
+    This function takes in a list of categories
+    - creates an empty list
+    - loops through the arguements categories
+        - applies get_articles to ea category to create a list of dictionaries
+            containing title, content, category
+        - appends all lists created for each category
+    - converts to pandas DF
+    returns df.    
+    """
+    
+    all_inshorts = []
+    
+    for category in categories:
+        all_category_articles = get_articles(category)
+        all_inshorts = all_inshorts + all_category_articles
+        
+    df = pd.DataFrame(all_inshorts)
+    
+    return df
