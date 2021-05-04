@@ -14,7 +14,7 @@ def get_blog_articles(site):
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
     url = site
     response = requests.get(url, headers=headers)
-    soup = bs4.BeautifulSoup(response.text)
+    soup = bs4.BeautifulSoup(response.text, features="lxml")
     
     articles_container = soup.select('#jupiterx-primary')[0]
     article = articles_container.select('.jupiterx-post')
@@ -72,6 +72,12 @@ def convert_to_df():
     This function takes list of dictionaries created by `loop_blog_articles`
     returns converted list to df
     """
+    sites = ["https://codeup.com/codeups-data-science-career-accelerator-is-here/", 
+         "https://codeup.com/data-science-myths/", 
+         "https://codeup.com/data-science-vs-data-analytics-whats-the-difference/", 
+         "https://codeup.com/10-tips-to-crush-it-at-the-sa-tech-job-fair/", 
+         "https://codeup.com/competitor-bootcamps-are-closing-is-the-model-in-danger/"]
+    
     all_blog_posts = loop_blog_articles(sites)
     df = pd.DataFrame(all_blog_posts)
     return df
@@ -115,7 +121,7 @@ def get_articles(category):
     
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
     response = requests.get(url, headers=headers)
-    soup = bs4.BeautifulSoup(response.text)
+    soup = bs4.BeautifulSoup(response.text, features="lxml")
     
     articles = soup.select('.news-card')
     
