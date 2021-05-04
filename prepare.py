@@ -2,6 +2,9 @@ import unicodedata
 import re
 import json
 
+import warnings
+warnings.filterwarnings("ignore")
+
 import nltk
 from nltk.tokenize.toktok import ToktokTokenizer
 from nltk.corpus import stopwords
@@ -23,8 +26,11 @@ def basic_clean(sentence):
         - whitespace: \s
     returns cleaned string
     """
+    #lowercases
     clean = sentence.lower()
+    #normalize unicode
     clean = unicodedata.normalize('NFKD', clean).encode('ascii', 'ignore').decode('utf-8', 'ignore')
+    #uses regex to substitute anything non-alphanumeric, single quote or whitespace
     clean = re.sub(r"[^a-z0-9'\s]", '', clean)
     
     return clean
