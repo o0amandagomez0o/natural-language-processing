@@ -154,11 +154,28 @@ def remove_columns(df, cols_to_remove):
 
 
 
-def full_news_df():
+def full_df(df, columns):
+    """
+    This function will
+    - drop unncessary cols
+    - rename content col
+    apply functions:
+    - basic_clean
+    - Tokenize
+    - stem
+    - lemmatize
+    to create new columns
+    returns appended columns as one pandas df
     """
     
-    """
+    df = remove_columns(df, cols_to_remove=[columns])
     
-    news_df = p.remove_columns(news_df, cols_to_remove=["category"])
+    df = df.rename(columns={"content": "original"})
     
-    news_df = news_df.rename(columns={"content": "original"})
+    df['clean'] = df.original.apply(basic_clean).apply(tokenize)
+    
+    df['stemmed'] = df.clean.apply(stem)
+    df['lemmatized'] = df.clean.apply(lemmatize)
+    
+    return df
+
