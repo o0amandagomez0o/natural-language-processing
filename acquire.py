@@ -1,6 +1,33 @@
 import requests
 import bs4
 import pandas as pd
+from env import user, password, host
+
+
+def get_connection(db, user=user, host=host, password=password):
+    '''
+    This function uses my info from my env file to
+    create a connection url to access the Codeup db.
+    '''
+    return f'mysql+pymysql://{user}:{password}@{host}/{db}'
+
+
+    
+    
+    
+def get_data(sql_query, db):
+    '''
+    sql_query should be in triple quotation """ """
+    This function reads in the data from the Codeup db
+    and returns a pandas DataFrame with all columns.
+    '''
+    
+    return pd.read_sql(sql_query, get_connection(db))
+
+
+
+
+
 
 def get_blog_articles(site):
     """

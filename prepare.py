@@ -77,14 +77,19 @@ def stem(sentence):
 
 
 
-def lemmatize(sentence):
+def lemmatize(sentence, nltkdl=True):
     """
     This function takes in a string
     - strips each word to it's lexicographically correct stem word 
     returns stripped string
-    """
+    .
+    .
+    .
     # Download if not done so already.
     nltk.download('wordnet')
+    """
+    if nltkdl==False:
+        nltk.download('wordnet')
     
     # Create the Lemmatizer.
     wnl = nltk.stem.WordNetLemmatizer()
@@ -168,7 +173,7 @@ def full_df(df, columns):
     returns appended columns as one pandas df
     """
     
-    df = remove_columns(df, cols_to_remove=[columns])
+    df = remove_columns(df, cols_to_remove=columns)
     
     df = df.rename(columns={"content": "original"})
     
