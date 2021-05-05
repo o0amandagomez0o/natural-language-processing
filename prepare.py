@@ -149,3 +149,16 @@ def remove_columns(df, cols_to_remove):
     """
     df = df.drop(columns=cols_to_remove)
     return df
+
+
+
+
+
+def full_news_df():
+    """
+    
+    """
+    
+    news_df = p.remove_columns(news_df, cols_to_remove=["category"])
+    
+    news_df = news_df.rename(columns={"content": "original"})
